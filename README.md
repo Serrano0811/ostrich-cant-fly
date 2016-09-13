@@ -1,4 +1,4 @@
 # ostrich-cant-fly
-Config file 2 change language for LoL.
+This repository contains node.js answers to workshops.
 
-This is my repo to keep my config file updated for LoL, with this file you can change the language of lol
+This is my repo to study node.js and start my javascript path, I hope you enjoy.
