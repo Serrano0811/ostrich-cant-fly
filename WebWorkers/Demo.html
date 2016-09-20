@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>JS:Web Workers</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  </head>
+  <body>
+    
+    <div class="container">
+      <div class="jumbotron">
+        <div class="page-header">
+          <h1>JS: Web Workers</h1>
+          <h1><small>The way JS simulate threading</small></h1>
+          <h6>Author: Serrano0811</h6>
+        </div>
+      </div>
+      
+      <!-- Copy&Pasting directly from bootstrap, that's the main porpuse of bootstrap right? -->
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="input-group">
+            <input type="text" id="message" class="form-control" placeholder="Write a message to send to worker...">
+            <span class="input-group-btn">
+              <button id="send-message" class="btn btn-default" type="button">Send</button>
+            </span>
+          </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+      </div><!-- /.row -->
+      
+      <!-- Web Worker's messages -->
+      <ul id="message-list">
+      </ul>
+      
+      <!-- SIDE NOTES PANEL -->
+      <div class="panel panel-default">
+        
+        <div class="panel-heading">
+          <h3 class="panel-title">TROUBLESHOOTING</h3>
+        </div>
+        
+        <div class="panel-body">
+          All links here will open in a new tab.
+          <ol>
+            <li>Check if your web browser supports 'web workers':
+              <ul>
+                <li>Enter this site:  <a href="http://caniuse.com/#feat=webworkers" target="_blank">http://caniuse.com/#feat=webworkers</a></li>
+                <li>Check your web browser's version against the list.</li>
+                <li>On top of the page lacate an orange div with a label and an input: "Can I use____?".</li>
+                <li>Write: "postMessage" (without double quotes) in that input.</li>
+                <li>NMake sure your web browser's version still green after checking postMessage.</li>
+              </ul>
+            </li>
+          <li>Make sure Bootstrap + JS n' JQuery are available via CDN or on your disk</li>
+          <li>In case the CDN links aren't available:
+            <ul>
+              <li>To add Bootstrap + JS enter this site: <a href="http://getbootstrap.com/getting-started/#download-cdn" target="_blank">http://getbootstrap.com/getting-started/#download-cdn</a></li>
+              <li>copy all the content in the textbox and paste it on the head/body of this html.</li>
+              <li>To add JQuery enter this site: <a href="https://code.jquery.com/" target="_blank">https://code.jquery.com/</a></li>
+              <li>Pick the last version and do the same as with Bootstrap + JS.</li>
+            </ul>
+          </li>
+          <li>Last but not least, make sure you add the CDN lines before the web worker script.</li>
+          </ol>
+        </div> <!-- #panel-body -->
+        
+      </div> <!-- #panel panel-default -->
+      
+    </div> <!-- #container -->
+
+
+
+    <!-- SCRIPTS -->
+      
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+    
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    
+    <!-- Adding the script here for simplicity, not ideal but real (lazyness...) -->
+    <script>
+      // Create the worker, point to the worker script
+      var worker = new Worker('./Demo.js');
+      
+      // Receive messages from the worker
+      worker.onmessage = function (e) { // e: events
+        // The message is on the data property
+        var message = e.data;
+        
+        // JQuery here because why not, since I added the script here instead of an isolated file, so why not jquery everything I can
+        $('#message-list').append('<li>' + message + '</li>');
+      }
+      
+      $('#send-message').click(function () {
+        var message = $('#message').val();
+        
+        // Let's try with a JSON instead of a string: message
+        var messageObject = { message: message };
+        
+        // Send Message: To send the message we simply call postMessage()
+        worker.postMessage(messageObject); // This could be 'message' (String) instead of 'messageObject' (Object).
+      });
+    </script>
+    
+  </body>
+</html>
