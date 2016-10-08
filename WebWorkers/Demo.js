@@ -26,7 +26,7 @@ function stopClock() {
 $(function () {
   // create the worker
   // Remember, the script executes immediately
-  var worker = new Worker('./' + workerFileName);
+  var worker = new Worker(workerFileName);
   
   // Create event handler for onmessage
   // Event raised when worker sends message to page
